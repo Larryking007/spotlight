@@ -1,25 +1,5 @@
-import { Link } from "expo-router";
-import { Text, View, StyleSheet, TouchableOpacity, } from "react-native";
+import { Redirect } from "expo-router";
 
 export default function Index() {
-  return (
-    <View style={styles.container} >
-      <Text style={styles.title}>Home</Text>
-      <Link href="/notifications">This is the notification page </Link>
-    </View>
-
-  );
+  return <Redirect href="/(auth)/login" />;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: 'red',
-  },
-})
