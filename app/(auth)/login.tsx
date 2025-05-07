@@ -1,10 +1,27 @@
 import { Ionicons } from '@expo/vector-icons'
-import { Image, Text, View } from 'react-native'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
 import { styles } from "../../constants/auth.styles"
-import { COLORS } from 'constants/theme'
+import { COLORS } from '../../constants/theme'
+import { useSSO } from '@clerk/clerk-expo'
+import { useRouter } from 'expo-router'
 
 
 export default function login() {
+
+  const { startSSOFlow } = useSSO();
+  const router = useRouter();
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const { createdSessionId, setActive } = await startSSOFlow({ strategy: 'oauth_google' });
+      if (setActive && createdSessionId) {
+        await setActive({ session: createdSessionId });
+        router.replace('/(tabs)');
+      }
+    } catch (error) {
+      console.error('Error during Google sign-in:', error);
+    }
+  }
   return (
     <View style={styles.container}>
 
@@ -22,6 +39,21 @@ export default function login() {
         <Image source={require('../../assets/images/auth-bg-1.png')}
           style={styles.illustration}
           resizeMode='cover' />
+      </View>
+
+      {/* LOGIN SECTION */}
+      <View style={styles.loginSection}>
+        <TouchableOpacity
+          style={styles.googleButton}
+          onPress={handleGoogleSignIn}
+          activeOpacity={0.9}>
+          <View style={styles.googleIconContainer}>
+            <Ionicons name='logo-google' size={24} color={COLORS.surface} />
+          </View>
+          <Text style={styles.googleButtonText}>Continue with Google</Text>
+        </TouchableOpacity>
+        <Text style={styles.termsText}>
+          By continuing, you agree to our Terms of Service and Privacy Policy.</Text>
       </View>
     </View>
   )

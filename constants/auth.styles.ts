@@ -1,5 +1,5 @@
 // styles/auth.styles.ts
-import { COLORS } from "constants/theme";
+import { COLORS } from "../constants/theme";
 import { StyleSheet, Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
