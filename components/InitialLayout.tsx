@@ -10,16 +10,18 @@ export default function InitialLayout() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoaded) return
+    if (!isLoaded) return;
+
     const isAuthScreen = segments[0] === "(auth)"
 
     if (!isSignedIn && !isAuthScreen) {
-      router.replace("/(auth)/login")
+      router.replace("/(auth)/login");
     } else if (isSignedIn && isAuthScreen) {
       router.replace("/(tabs)")
     }
-  }, [isLoaded, isSignedIn])
-  if (!isLoaded) return null
+  }, [isLoaded, isSignedIn, segments]);
+
+  if (!isLoaded) return null;
 
   return <Stack screenOptions={{
     headerShown: false,
