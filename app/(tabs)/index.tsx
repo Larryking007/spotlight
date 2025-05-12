@@ -1,7 +1,7 @@
-import { Text, TouchableOpacity, View } from 'react-native'
-import { useAuth } from '@clerk/clerk-expo'
-import React from 'react'
-import { styles } from '@/constants/auth.styles';
+import { styles } from '@/styles/auth.styles';
+import { useAuth } from '@clerk/clerk-expo';
+import React from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
 
 const index = () => {
 

@@ -1,9 +1,9 @@
-import { Ionicons } from '@expo/vector-icons'
-import { Image, Text, TouchableOpacity, View } from 'react-native'
-import { styles } from "../../constants/auth.styles"
-import { COLORS } from '../../constants/theme'
 import { useSSO } from '@clerk/clerk-expo'
+import { Ionicons } from '@expo/vector-icons'
 import { useRouter } from 'expo-router'
+import { Image, Text, TouchableOpacity, View } from 'react-native'
+import { COLORS } from '../../constants/theme'
+import { styles } from "../../styles/auth.styles"
 
 
 export default function login() {
