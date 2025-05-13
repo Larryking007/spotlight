@@ -1,4 +1,5 @@
-import { mutation, query } from "./_generated/server";
+import { Query } from "convex/server";
+import { mutation, MutationCtx, query, QueryCtx } from "./_generated/server";
 import { v } from "convex/values";
 
 export const createUser = mutation({
@@ -13,8 +14,9 @@ export const createUser = mutation({
   handler: async (ctx, args) => {
 
     //check if the user already exists 
-    const existingUser =  await ctx.db.query("users")
-    .withIndex("by_clerkId", (q) => q.eq("clerkId", args.clerkId))
+    const existingUser =  await ctx.db
+    .query("users")
+    .withIndex("by_clerk_id", (q) => q.eq("clerkId", args.clerkId))
     .first();  
     
     //if the user already exists, return
@@ -34,4 +36,18 @@ export const createUser = mutation({
       posts: 0,
     })
   }
-})
+});
+
+export async function getAuthenticatedUser( ctx: QueryCtx | MutationCtx) {
+  const identity = await ctx.auth.getUserIdentity();
+  if (!identity) throw new Error("Unauthorized");
+
+  const currentUser = await ctx.db
+  .query("users")
+    .withIndex("by_clerk_id", (q) => q.eq("clerkId", identity.subject))
+    .first();
+
+  if (!currentUser) throw new Error("User not found");
+  
+  return currentUser;
+}

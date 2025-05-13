@@ -13,7 +13,7 @@ export default defineSchema({
     posts: v.number(),
     clerkId: v.string(),
 
-  }).index("by_clerkId", ["clerkId"]),
+  }).index("by_clerk_id", ["clerkId"]),
 
   posts: defineTable({
     userId: v.id("users"),
@@ -22,19 +22,20 @@ export default defineSchema({
     caption: v.optional(v.string()),
     likes: v.number(),
     comments: v.number(),
-}).index("by_userId", ["userId"]),
+}).index("by_user", ["userId"]),
 
 likes: defineTable({
   userId: v.id("users"),
     postId: v.id("posts"),
-}).index("by_postId", ["postId"])
-.index("by_userId", ["userId", "postId"]),
+})
+.index("by_post", ["postId"])
+.index("by_user_and_post", ["userId", "postId"]),
 
 comments: defineTable({
   userId: v.id("users"),
     postId: v.id("posts"),
     content: v.string(),
-}).index("by_postId", ["postId"]),
+}).index("by_post", ["postId"]),
 
 follow: defineTable({
   followerId: v.id("users"),
@@ -54,7 +55,8 @@ notifications: defineTable({
 bookmarks: defineTable({
   userId: v.id("users"),
     postId: v.id("posts"),
-}).index("by_user", ["userId"])
+})
+.index("by_user", ["userId"])
 .index("by_post", ["postId"])
-.index("by_both", ["userId", "postId"]),
+.index("by_user_and_post", ["userId", "postId"]),
 })
