@@ -1,3 +1,5 @@
+import Loader from '@/components/Loader';
+import Post from '@/components/Post';
 import Story from '@/components/Story';
 import { STORIES } from '@/constants/mock-data';
 import { COLORS } from '@/constants/theme';
@@ -22,9 +24,9 @@ export default function Index() {
     <View style={styles.container}>
 
       {/* HEADER */}
-      <View style={styles.header}>
+      <View style={styles.header} >
         <Text style={styles.header}>spotlight</Text>
-        <TouchableOpacity onPress={() => { }}>
+        <TouchableOpacity onPress={() => signOut()}>
           <Ionicons name='log-out-outline' size={24} color={COLORS.white} />
         </TouchableOpacity>
       </View>
@@ -33,6 +35,7 @@ export default function Index() {
         {/* STORIES */}
 
         <ScrollView
+          horizontal
           showsVerticalScrollIndicator={false}
           style={styles.storiesContainer}>
           {STORIES.map((story) => (
@@ -41,11 +44,14 @@ export default function Index() {
         </ScrollView>
 
         {/* POSTS */}
+        {posts.map((post) => (
+          <Post key={post._id} post={post} />
+        ))}
 
+        {/* <Post /> */}
       </ScrollView>
-
     </View>
-  )
+  );
 }
 
 const NoPostFound = () => (

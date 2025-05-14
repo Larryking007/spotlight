@@ -9,16 +9,16 @@ type Story = {
   hasStory: boolean;
 };
 
-export default function Story({ Story }: { Story: Story }) {
+export default function Story({ story }: { story: Story }) {
   return (
     <TouchableOpacity style={styles.storyWrapper}>
-      <View style={[styles.storyRing, !Story.hasStory && styles.noStory]}>
+      <View style={[styles.storyRing, !story.hasStory && styles.noStory]}>
         <Image
-          source={{ uri: Story.avatar }}
+          source={{ uri: story.avatar }}
           style={styles.storyAvatar}
         />
       </View>
-      <Text style={styles.storyUsername}>{Story.username}</Text>
+      <Text style={styles.storyUsername}>{story.username}</Text>
     </TouchableOpacity>
 
   )
