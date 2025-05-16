@@ -41,7 +41,7 @@ export default function Post({ post }: PostProps) {
       setIsLiked(newIsLiked);
       setLikeCount((prev) => (newIsLiked ? prev + 1 : prev - 1));
     } catch (error) {
-
+      console.error("Error liking post: ", error);
     }
   }
 
@@ -75,8 +75,8 @@ export default function Post({ post }: PostProps) {
 
       {/* IMAGE */}
       <Image
-        source={post.author.image}
-        style={styles.postAvatar}
+        source={post.imageUrl}
+        style={styles.postImage}
         contentFit='cover'
         transition={200}
         cachePolicy="memory-disk" />
@@ -84,7 +84,7 @@ export default function Post({ post }: PostProps) {
       {/* POST ACTIONS */}
       <View style={styles.postActions}>
         <View style={styles.postActionsLeft}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={handleLike}>
             <Ionicons name={isLiked ? 'heart' : 'heart-outline'}
               size={24}
               color={isLiked ? COLORS.primary : COLORS.white} />
@@ -99,7 +99,9 @@ export default function Post({ post }: PostProps) {
       </View>
       {/* POST INFO */}
       <View style={styles.postInfo}>
-        <Text style={styles.likesText}>Be the first to like this</Text>
+        <Text style={styles.likesText}>
+          {likeCount > 0 ? `${likeCount.toLocaleString()} likes` : "Be the first to like this post"}
+        </Text>
         {post.caption && (
           <View style={styles.captionContainer}>
             <Text style={styles.captionUsername}>{post.author.username}</Text>
