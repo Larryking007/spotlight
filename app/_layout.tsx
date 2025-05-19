@@ -10,12 +10,12 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const fontsLoaded = useFonts({
-    "JetBrainsMono": require("../assets/fonts/JetBrainsMono.ttf"),
+    "JetBrainsMono-Medium": require("../assets/fonts/JetBrainsMono-Medium.ttf"),
   })
 
-  const onLayoutRootShouldSet = useCallback(async () => {
+  const onLayoutRootView = useCallback(async () => {
 
-    if (fontsLoaded) SplashScreen.hideAsync();
+    if (fontsLoaded) await SplashScreen.hideAsync();
   },
     [fontsLoaded]);
 
@@ -24,7 +24,7 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <SafeAreaView
           style={{ flex: 1, backgroundColor: 'black' }}
-          onLayout={onLayoutRootShouldSet}>
+          onLayout={onLayoutRootView}>
           <InitialLayout />
         </SafeAreaView>
       </SafeAreaProvider>
