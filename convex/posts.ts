@@ -122,7 +122,7 @@ export const createPost = mutation({
             //if it's not my post, create a notification
             if (currentUser._id !== post.userId ) {
               await ctx.db.insert("notifications", {
-                recieverId: post.userId,
+                receiverId: post.userId,
                 senderId: currentUser._id,
                 type: "like",
                 postId: args.postId,
@@ -157,7 +157,7 @@ export const createPost = mutation({
         }
         // delete associated comments
         const comments = await ctx.db
-          .query("comments")
+          .query("comment")
           .withIndex("by_post", (q) =>
             q.eq("postId", args.postId)
           )

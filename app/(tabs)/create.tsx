@@ -10,6 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
+import { set } from 'date-fns';
 
 export default function CreateScreen() {
 
@@ -51,6 +52,9 @@ export default function CreateScreen() {
 
       const { storageId } = JSON.parse(uploadResult.body);
       await createPost({ storageId, caption });
+
+      setSelectedImage(null);
+      setCaption('');
 
       router.push("/(tabs)");
 

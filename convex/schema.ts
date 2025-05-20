@@ -31,7 +31,7 @@ likes: defineTable({
 .index("by_post", ["postId"])
 .index("by_user_and_post", ["userId", "postId"]),
 
-comments: defineTable({
+comment: defineTable({
   userId: v.id("users"),
     postId: v.id("posts"),
     content: v.string(),
@@ -45,12 +45,12 @@ follow: defineTable({
 .index("by_both", ["followerId", "followingId"]),
 
 notifications: defineTable({
-  recieverId: v.id("users"),
+  receiverId: v.id("users"),
   senderId: v.id("users"),
   type: v.union(v.literal("like"), v.literal("comment"), v.literal("follow")),
   postId: v.optional(v.id("posts")),
-  commentId: v.optional(v.id("comments")),
-}).index("by_reciever", ["recieverId"]),
+  commentId: v.optional(v.id("comment")),
+}).index("by_receiver", ["receiverId"]),
 
 bookmarks: defineTable({
   userId: v.id("users"),

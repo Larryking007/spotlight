@@ -17,7 +17,7 @@ export const addComment = mutation({
     }
 
 
-    const commentId = await ctx.db.insert("comments",
+    const commentId = await ctx.db.insert("comment",
       {
         content: args.content,
         postId: post._id,
@@ -30,7 +30,7 @@ export const addComment = mutation({
     // create a notification if the user is not the post author
     if (currentUser._id !== post.userId) {
       await ctx.db.insert("notifications", {
-        recieverId: post.userId,
+        receiverId: post.userId,
         senderId: currentUser._id,
         type: "comment",
         postId: args.postId,
@@ -49,7 +49,7 @@ export const getComments = query({
   },
   handler: async (ctx, args) => {
     const comments = await ctx.db
-      .query("comments")
+      .query("comment")
       .withIndex("by_post", q => q.eq("postId", args.postId))
       .collect();
       
