@@ -173,10 +173,24 @@ export const createPost = mutation({
             q.eq("postId", args.postId)
           )
           .collect();
-        
+                  
         for (const bookmark of bookmarks) {
           await ctx.db.delete(bookmark._id);
         }
+
+         // delete associated notifications
+         const notifications = await ctx.db
+          .query("notifications")
+          .withIndex("by_post", (q) =>
+            q.eq("postId", args.postId)
+          )
+          .collect();
+                  
+        for (const notification of notifications) {
+          await ctx.db.delete(notification._id);
+        }
+
+
         // delete the image from storage
         await ctx.storage.delete(post.storageId);
 

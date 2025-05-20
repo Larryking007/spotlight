@@ -50,7 +50,8 @@ notifications: defineTable({
   type: v.union(v.literal("like"), v.literal("comment"), v.literal("follow")),
   postId: v.optional(v.id("posts")),
   commentId: v.optional(v.id("comment")),
-}).index("by_receiver", ["receiverId"]),
+}).index("by_receiver", ["receiverId"])
+.index("by_post", ["postId"]),
 
 bookmarks: defineTable({
   userId: v.id("users"),
