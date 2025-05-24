@@ -12,6 +12,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 type NotificationProps = {
   notification: {
     sender: {
+      _id: Id<'users'>;
       image: string;
       username: string;
     };
@@ -30,7 +31,7 @@ export default function Notification({ notification }: NotificationProps) {
     <View style={styles.notificationItem}>
       <View style={styles.notificationContent}>
         {/* todo: fix later */}
-        <Link href="/notifications">
+        <Link href={`./user/${notification.sender._id}`} asChild>
           <TouchableOpacity style={styles.avatarContainer}>
             <Image
               source={notification.sender.image}
