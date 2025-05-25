@@ -13,10 +13,9 @@ type CommentsModalProps = {
   postId: Id<"posts">;
   visible: boolean;
   onClose: () => void;
-  onCommentAdded: () => void;
 }
 
-export default function CommentsModal({ postId, visible, onClose, onCommentAdded }: CommentsModalProps) {
+export default function CommentsModal({ postId, visible, onClose }: CommentsModalProps) {
   const [newComment, setNewComment] = useState('')
 
   const comments = useQuery(api.comments.getComments, { postId });
@@ -27,7 +26,6 @@ export default function CommentsModal({ postId, visible, onClose, onCommentAdded
 
     try {
       await addComment({ postId, content: newComment });
-      onCommentAdded();
       setNewComment('');
     } catch (error) {
       console.error("Error adding comment: ", error);

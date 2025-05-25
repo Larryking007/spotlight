@@ -1,18 +1,19 @@
-import { View, Text, TouchableOpacity, ScrollView, Pressable } from 'react-native'
-import React from 'react'
-import { useMutation, useQuery } from 'convex/react';
-import { api } from '@/convex/_generated/api';
-import { useLocalSearchParams, useSearchParams } from 'expo-router/build/hooks';
-import { Id } from '@/convex/_generated/dataModel';
 import Loader from '@/components/Loader';
-import { styles } from '@/styles/profile.styles';
 import { COLORS } from '@/constants/theme';
+import { api } from '@/convex/_generated/api';
+import { Id } from '@/convex/_generated/dataModel';
+import { styles } from '@/styles/profile.styles';
 import { Ionicons } from '@expo/vector-icons';
+import { useMutation, useQuery } from 'convex/react';
 import { Image } from 'expo-image';
+import { useLocalSearchParams, useRouter } from 'expo-router/build/hooks';
+import React from 'react';
+import { FlatList, Pressable, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 
 export default function UserProfileScreen() {
 
   const { id } = useLocalSearchParams();
+  const router = useRouter();
 
   const profile = useQuery(api.users.getUserProfile, { id: id as Id<'users'> });
   const posts = useQuery(api.posts.getPostByUser, { userId: id as Id<'users'> });
@@ -20,7 +21,10 @@ export default function UserProfileScreen() {
 
   const toggleFollow = useMutation(api.users.toggleFollow);
 
-  const handleBack = () => { }
+  const handleBack = () => {
+    if (router.canGoBack()) router.back();
+    else router.replace('/(tabs)');
+  }
 
   if (profile === undefined || posts === undefined || isFollowing === undefined) return <Loader />
 
@@ -74,7 +78,33 @@ export default function UserProfileScreen() {
           </Pressable>
         </View>
 
-        <View style={styles.postsGrid}></View>
+        <View style={styles.postsGrid}>
+          {posts.length === 0 ? (
+            <View style={styles.noPostsContainer}>
+              <Ionicons name="image-outline" size={48} color={COLORS.grey} />
+              <Text style={styles.noPostsText}>No posts yet</Text>
+            </View>
+          ) : (
+            <FlatList
+              data={posts}
+              numColumns={3}
+              scrollEnabled={false}
+              renderItem={({ item }) => (
+                <TouchableOpacity style={styles.gridItem}>
+                  <Image
+                    source={item.imageUrl}
+                    style={styles.gridImage}
+                    contentFit='cover'
+                    transition={200}
+                    cachePolicy={'memory-disk'}
+                  />
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item._id}
+            />
+
+          )}
+        </View>
       </ScrollView>
     </View>
   )
